@@ -18,6 +18,7 @@ def main():
     api_token = os.environ.get("INPUT_API_TOKEN")
     parameters = os.environ.get("INPUT_PARAMETERS")
     cookies = os.environ.get("INPUT_COOKIES")
+    headers = os.environ.get("INPUT_HEADERS")
     wait = bool(os.environ.get("INPUT_WAIT"))
     timeout = int(os.environ.get("INPUT_TIMEOUT"))
     start_timeout = int(os.environ.get("INPUT_START_TIMEOUT"))
@@ -46,7 +47,15 @@ def main():
     else:
         cookies = {}
 
-    jenkins = Jenkins(url, auth=auth, cookies=cookies)
+    if headers:
+        try:
+            headers = json.loads(headers)
+        except json.JSONDecodeError as e:
+            raise Exception('`headers` is not valid JSON.') from e
+    else:
+        headers = {}
+
+    jenkins = Jenkins(url, auth=auth, cookies=cookies, headers=headers)
 
     try:
         jenkins.version

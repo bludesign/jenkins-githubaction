@@ -36,6 +36,9 @@ inputs:
     description: "How frequently in seconds to query Jenkins for build status"
     required: false
     default: "5"
+  headers:
+    required: false
+    description: "Additional HTTP headers to be sent alongside the request"
 outputs:
   build_url:
     description: "Jenkins build URL"
